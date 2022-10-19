@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { SingleCoin } from '../config/api';
 import { CryptoState } from '../CryptoContext';
 import axios from 'axios';
-import { LinearProgress, makeStyles, Typography } from '@material-ui/core';
+import { LinearProgress, makeStyles, Typography, TextField, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import CoinInfo from '../components/CoinInfo';
 import parse from 'html-react-parser'
 import { numberWithCommas } from '../components/Banner/Carousel';
@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme)=>({
 const CoinPage = () => {
   let {id} = useParams();
   const [coin, setCoin] = useState();
+  const [numCoins, setNumCoins] = useState(0);
   const {currency, symbol} = CryptoState();
   const classes = useStyles();
   const navigate = useNavigate();
@@ -104,6 +105,8 @@ const CoinPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   
+  const coinNumbers = [...Array(100).keys()];
+  console.log(coinNumbers);
   
   if(!coin) return <LinearProgress style={{backgroundColor: "#e4451df3"}}/>
   
@@ -220,7 +223,10 @@ const CoinPage = () => {
             </Typography>
           </span>
         </div>
-        <Link to={'/portfolio'} className={classes.portbutton} state={coin}>Add to portfolio</Link>
+        <div style={{marginBottom: 20}}>
+          <TextField id="outlined-basic" label="Number of coins" variant="outlined" onChange={e => setNumCoins(e.target.value)}/>
+        </div>
+        <Link to={'/portfolio'} style={numCoins <= 0 ? {pointerEvents: "none"} : null} className={classes.portbutton} state={{coin: coin, numCoins: numCoins}}>Add to portfolio</Link>
       </div>
       
       

@@ -4,14 +4,14 @@ import CoinInfo from '../components/CoinInfo';
 
 const PortfolioPage = () => {
   const location = useLocation();
-  let newcoin = location.state;
-  const coins = 
+  const { coin, numCoins } = location.state;
 
-  console.log(newcoin);
+  console.log(coin);
   return (
     <div>
       PortfolioPage
-      {newcoin.name}
+      {coin.name}
+      {numCoins}
     </div>
     
   )
