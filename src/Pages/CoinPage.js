@@ -7,6 +7,7 @@ import { LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import CoinInfo from '../components/CoinInfo';
 import parse from 'html-react-parser'
 import { numberWithCommas } from '../components/Banner/Carousel';
+import dateFormat, { masks } from "dateformat";
 
 const useStyles = makeStyles((theme)=>({
   container:{
@@ -124,22 +125,22 @@ const CoinPage = () => {
         </Typography>
         <div className={classes.marketData}>
           <span style={{display: "flex"}}>
-            <Typography variant="h6" className={classes.heading}>
+            <Typography variant="h7" className={classes.heading}>
               Rank:
             </Typography>
             &nbsp; &nbsp;
-            <Typography variant="h6" style={{
+            <Typography variant="h7" style={{
               fontFamily:"Montserrat",}
             }>
               {coin?.market_cap_rank}
             </Typography>
           </span>
           <span style={{display: "flex"}}>
-            <Typography variant="h6" className={classes.heading}>
+            <Typography variant="h7" className={classes.heading}>
               Current Price:
             </Typography>
             &nbsp; &nbsp;
-            <Typography variant="h6" style={{
+            <Typography variant="h7" style={{
               fontFamily:"Montserrat",}
             }>
 
@@ -147,11 +148,11 @@ const CoinPage = () => {
             </Typography>
           </span>
           <span style={{display: "flex"}}>
-            <Typography variant="h6" className={classes.heading}>
+            <Typography variant="h7" className={classes.heading}>
               Market Cap:
             </Typography>
             &nbsp; &nbsp;
-            <Typography variant="h6" style={{
+            <Typography variant="h7" style={{
               fontFamily:"Montserrat",}
             }>
 
@@ -161,7 +162,63 @@ const CoinPage = () => {
               )}M
             </Typography>
           </span>
-          
+          <span style={{display: "flex"}}>
+            <Typography variant="h7" className={classes.heading}>
+              Total Supply:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h7" style={{
+              fontFamily:"Montserrat",}
+            }>
+
+              {symbol}{" "}{numberWithCommas(coin?.market_data.total_supply
+                .toString()
+                .slice(0,-6)
+              )}M
+            </Typography>
+          </span>
+          <span style={{display: "flex"}}>
+            <Typography variant="h7" className={classes.heading}>
+              Circulating Supply:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h7" style={{
+              fontFamily:"Montserrat",}
+            }>
+
+              {symbol}{" "}{numberWithCommas(coin?.market_data.circulating_supply
+                .toString()
+                .slice(0,-6)
+              )}M
+            </Typography>
+          </span>
+          <span style={{display: "flex"}}>
+            <Typography variant="h7" className={classes.heading}>
+              Last Updated:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h7" style={{
+              fontFamily:"Montserrat",}
+            }>
+
+              {dateFormat(new Date(coin?.last_updated), "dddd, mmmm dS, yyyy, h:MM:ss TT")}
+            </Typography>
+          </span>
+          <span style={{display: "flex"}}>
+            <Typography variant="h7" className={classes.heading}>
+              24hour Volume:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h7" style={{
+              fontFamily:"Montserrat",}
+            }>
+
+              {symbol}{" "}{numberWithCommas(coin?.market_data.total_volume[currency.toLowerCase()]
+                .toString()
+                .slice(0,-6)
+              )}M
+            </Typography>
+          </span>
         </div>
         <Link to={'/portfolio'} className={classes.portbutton} state={coin}>Add to portfolio</Link>
       </div>
