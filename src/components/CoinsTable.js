@@ -96,7 +96,7 @@ const CoinsTable = () => {
                <Table>
                  <TableHead style={{backgroundColor: "#EEBC1D"}}>
                    <TableRow>
-                     {["Coin", "Price", "24hr Change", "Market Cap"].map((head)=>(
+                     {["Coin", "Price", "Total Supply", "Market Cap"].map((head)=>(
                        <TableCell 
                        style={{color: "black",
                        fontWeight: "700",
@@ -116,7 +116,7 @@ const CoinsTable = () => {
                      .slice((page -1) * 10, (page - 1) * 10 + 10)
                      .map(row=>{
                        const profit = row.price_change_percentage_24h > 0;
-
+                      console.log(row);
                        return(
                            <TableRow 
                            onClick={() => navigate(`/coins/${row.id}`)}
@@ -155,13 +155,18 @@ const CoinsTable = () => {
                                    {numberWithCommas(row.current_price.toFixed(2))}
                                                                    
                            </TableCell> 
-                           <TableCell align="right"
+                           {/* <TableCell align="right"
                                    style={{color:profit > 0? "rgb(14,203,129" : "red",
                                    fontweight: 500,}}
                                    >
                                    {profit && '+'}{row.price_change_percentage_24h?.toFixed(2)}%
                                                                    
-                           </TableCell>
+                           </TableCell> */}
+                           <TableCell align="right" >
+                                   {symbol}{" "}
+                                   {!row.total_supply ? 0 : numberWithCommas(row.total_supply.toString().slice(0,-6))} M
+                                                                   
+                           </TableCell>  
                            <TableCell align="right" >
                                    {symbol}{" "}
                                    {numberWithCommas(row.market_cap.toString().slice(0,-6))} M
