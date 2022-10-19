@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme)=>({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 25,
+    //marginBottom: -55,
     padding: 40,
     [theme.breakpoints.down("md")]: {
       width: "100%",
@@ -41,12 +42,6 @@ const CoinInfo = ({coin}) => {
   const [days, setDays] = useState(1);
   const {currency} = CryptoState();
 
- 
-
-    
-
-
-
   const fetchHistoricData = async () => {
     const {data} = await axios.get(HistoricalChart(coin.id, days, currency))
 
@@ -55,6 +50,7 @@ const CoinInfo = ({coin}) => {
 
   useEffect(()=>{
     fetchHistoricData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency, days]);
 
   const chartTheme = createTheme({
@@ -109,21 +105,21 @@ const CoinInfo = ({coin}) => {
             
             />
             <div
-            // style={{
-            //   display: "flex",
-            //   marginTop: 20,
-            //   justifyContent: "space-around",
-            //   width: "100%"
-            // }}
+            style={{
+              //display: "flex",
+              marginTop: 40,
+              //justifyContent: "space-around",
+              //width: "100%"
+            }}
             >
               {chartData.map((day)=> (
                <SelectButton
-               key={day.value}
-               onClick={() => setDays(day.value)}
-               selected={day.value === days}
-               >
-                
-                {day.label}
+                  key={day.value}
+                  onClick={() => setDays(day.value)}
+                  selected={day.value === days}
+                  >
+                    
+                    {day.label}
                 </SelectButton> 
               ))}
             </div>

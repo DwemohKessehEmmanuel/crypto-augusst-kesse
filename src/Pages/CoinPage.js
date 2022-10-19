@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams} from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { SingleCoin } from '../config/api';
 import { CryptoState } from '../CryptoContext';
 import axios from 'axios';
 import { LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import CoinInfo from '../components/CoinInfo';
-import parse from 'react-html-parser'
+import parse from 'html-react-parser'
 import { numberWithCommas } from '../components/Banner/Carousel';
 
 const useStyles = makeStyles((theme)=>({
@@ -64,6 +64,23 @@ const useStyles = makeStyles((theme)=>({
       
     },
   },
+  portbutton: {
+    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px',
+    borderRadius: 5,
+    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontFamily: "Cursive",
+    cursor: "pointer",
+    backgroundColor: "#F9842C",
+    color: "white",
+    fontWeight: 700,
+    "&:hover": {
+      backgroundColor: "#e4451df3",
+      color: "#D3D3D3",
+      boxShadow: 'rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset',
+    },
+  }  
 }));
 
 
@@ -73,13 +90,14 @@ const CoinPage = () => {
   const [coin, setCoin] = useState();
   const {currency, symbol} = CryptoState();
   const classes = useStyles();
+  const navigate = useNavigate();
  
   const fetchSingleCoin = async() => {
     const {data} = await axios.get(SingleCoin(id));
-
-    setCoin(data)
+    //console.log(data);
+    setCoin(data);
   };
-
+  //console.log(coin);
   useEffect(()=>{
     fetchSingleCoin()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,10 +105,6 @@ const CoinPage = () => {
   
   
   if(!coin) return <LinearProgress style={{backgroundColor: "#e4451df3"}}/>
-
- 
- 
-  
   
   return (
     
@@ -101,54 +115,55 @@ const CoinPage = () => {
           alt={coin?.name}
           height="200"
           style={{marginBottom: 20}}
-          />
-          <Typography variant="h3" className={classes.heading}>
-            {coin?.name}
-          </Typography>
-          <Typography variant="subtitle1" className={classes.description}>
-            {parse(coin?.description.en.split(". ")[0])}
-          </Typography>
-          <div className={classes.marketData}>
-            <span style={{display: "flex"}}>
-              <Typography variant="h5" className={classes.heading}>
-                Rank:
-              </Typography>
-              &nbsp; &nbsp;
-              <Typography variant="h5" style={{
-                fontFamily:"Montserrat",}
-              }>
-                {coin?.market_cap_rank}
-              </Typography>
-            </span>
-            <span style={{display: "flex"}}>
-              <Typography variant="h5" className={classes.heading}>
-                Current Price:
-              </Typography>
-              &nbsp; &nbsp;
-              <Typography variant="h5" style={{
-                fontFamily:"Montserrat",}
-              }>
+        />
+        <Typography variant="h3" className={classes.heading}>
+          {coin?.name}
+        </Typography>
+        <Typography variant="subtitle1" className={classes.description}>
+          {parse(coin?.description.en.split(". ")[0])}
+        </Typography>
+        <div className={classes.marketData}>
+          <span style={{display: "flex"}}>
+            <Typography variant="h6" className={classes.heading}>
+              Rank:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h6" style={{
+              fontFamily:"Montserrat",}
+            }>
+              {coin?.market_cap_rank}
+            </Typography>
+          </span>
+          <span style={{display: "flex"}}>
+            <Typography variant="h6" className={classes.heading}>
+              Current Price:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h6" style={{
+              fontFamily:"Montserrat",}
+            }>
 
-                {symbol}{" "}{numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])}
-              </Typography>
-            </span>
-            <span style={{display: "flex"}}>
-              <Typography variant="h5" className={classes.heading}>
-                Market Cap:
-              </Typography>
-              &nbsp; &nbsp;
-              <Typography variant="h5" style={{
-                fontFamily:"Montserrat",}
-              }>
+              {symbol}{" "}{numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])}
+            </Typography>
+          </span>
+          <span style={{display: "flex"}}>
+            <Typography variant="h6" className={classes.heading}>
+              Market Cap:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography variant="h6" style={{
+              fontFamily:"Montserrat",}
+            }>
 
-                {symbol}{" "}{numberWithCommas(coin?.market_data.market_cap[currency.toLowerCase()]
-                  .toString()
-                  .slice(0,-6)
-                )}M
-              </Typography>
-            </span>
-            
-          </div>
+              {symbol}{" "}{numberWithCommas(coin?.market_data.market_cap[currency.toLowerCase()]
+                .toString()
+                .slice(0,-6)
+              )}M
+            </Typography>
+          </span>
+          
+        </div>
+        <Link to={'/portfolio'} className={classes.portbutton} state={coin}>Add to portfolio</Link>
       </div>
       
       
@@ -157,4 +172,4 @@ const CoinPage = () => {
   ) 
 }
 
-export default CoinPage
+export default CoinPage;
